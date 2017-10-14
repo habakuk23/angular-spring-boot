@@ -1,0 +1,32 @@
+plugins {
+  id 'com.moowork.node' version "1.2.0"
+}
+
+task ngServe(type: NpmTask) {
+  group = "angular"
+  args = ['run', 'start']
+}
+
+task ngBuild(type: NpmTask) {
+  group = "angular"
+  dependsOn = ['ngLint', 'ngTest', 'npmInstall']
+  args = ['run', 'build', '--', '--environment=prod', "--outputPath=${project(':service').projectDir}/src/main/resources/public"]
+}
+
+task ngTest(type: NpmTask) {
+  group = "angular"
+  dependsOn = ['ngLint']
+  args = ['run', 'test', '--', '--code-coverage', '--single-run']
+}
+
+task ngClean(type: NpmTask) {
+  group = "angular"
+  args = ['run', 'clean']
+}
+
+task ngLint(type: NpmTask) {
+  group = "angular"
+  args = ['run', 'lint', '--', '--fix']
+}
+
+

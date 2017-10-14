@@ -1,0 +1,10 @@
+<h1>
+  {{title}}
+</h1>
+
+<ul>
+  <li *ngFor="let message of messages$ | async">
+    <h3>{{message.author}}</h3>
+    <p>{{message.content}}</p>
+  </li>
+</ul>

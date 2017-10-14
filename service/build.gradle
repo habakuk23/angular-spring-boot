@@ -1,0 +1,73 @@
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://repo.spring.io/libs-milestone'
+        }
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.7.RELEASE")
+    }
+}
+
+plugins {
+    id 'groovy'
+    id 'war'
+    id 'application'
+    id 'org.springframework.boot' version '1.5.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.3.RELEASE'
+}
+
+ext {
+    SPRING_BOOT_VERSION = '1.5.7.RELEASE'
+    VERSION = '0.0.1'
+}
+
+jar {
+    baseName = 'spring-boot-service'
+    version = VERSION
+}
+
+war {
+    group 'com.schremser'
+    version VERSION
+}
+
+sourceCompatibility = 1.8
+
+mainClassName = 'com.schremser.spring.boot.SpringJerseyApplication'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
+
+dependencies {
+    compile "org.codehaus.groovy:groovy-all:2.4.12"
+    compile "org.springframework.boot:spring-boot-starter-parent:$SPRING_BOOT_VERSION"
+    compile "org.springframework.boot:spring-boot-starter-web:$SPRING_BOOT_VERSION"
+    compile "org.springframework.boot:spring-boot-starter-jersey:$SPRING_BOOT_VERSION"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$SPRING_BOOT_VERSION"
+    compile "org.glassfish.jersey.media:jersey-media-moxy:+"
+    compile "com.google.code.gson:gson:2.8.2"
+    compile "commons-io:commons-io:2.5"
+    compile "com.auth0:java-jwt:3.0.1"
+
+    testCompile "org.springframework.boot:spring-boot-starter-test:$SPRING_BOOT_VERSION"
+    testCompile "org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory:2.22.1"
+    testCompile "org.skyscreamer:jsonassert:+"
+    testCompile "org.assertj:assertj-core:+"
+    testCompile "junit:junit:4.12"
+}
+
+task cleanWebApp() {
+    delete "src/main/webapp/"
+}
+
+build.dependsOn ":ngApp:ngBuild"
+clean.dependsOn ":ngApp:ngClean", "cleanWebApp"
+test.dependsOn ":ngApp:ngTest"
